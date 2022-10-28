@@ -1,0 +1,7 @@
+﻿  PLayer.cpp
+C:\Users\Doryan\source\repos\ProjetPooJeux\ProjetPooJeux\PLayer.cpp(3,20): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 'name'
+C:\Users\Doryan\source\repos\ProjetPooJeux\ProjetPooJeux\PLayer.cpp(3,24): error C2226: erreur de syntaxe : type inattendu 'std::string'
+C:\Users\Doryan\source\repos\ProjetPooJeux\ProjetPooJeux\PLayer.cpp(3,20): error C2146: erreur de syntaxe : absence de ';' avant l'identificateur 'name'
+C:\Users\Doryan\source\repos\ProjetPooJeux\ProjetPooJeux\PLayer.cpp(3,24): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
+C:\Users\Doryan\source\repos\ProjetPooJeux\ProjetPooJeux\PLayer.cpp(3,26): error C2062: type 'int' inattendu
+C:\Users\Doryan\source\repos\ProjetPooJeux\ProjetPooJeux\PLayer.cpp(3,95): error C2059: erreur de syntaxe : ')'
