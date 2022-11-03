@@ -2,29 +2,33 @@
 #include <iostream>
 #include <vector>
 
-#include "Battlers.h"
+#include "Deck.h"
 class Player
 {
 private:
+
+	Deck* playerDeck;
+
 	int health;
 	int gold;
 	int level;
 
-	std::vector<Battlers> playerBattlers;
-
 	std::string name;
 
 public:
-	Player(std::string name, int health, int gold, int level, std::vector<Battlers> playerBattlers);
+	Player(std::string name, int health, int gold, int level);
+	Player();
 
 	int getGold();
 	int getHealth();
 	int getLevel();
-	std::vector<Battlers> getPlayerBattlers();
+	Deck* getPlayerDeck() { return playerDeck; };
 
 	void setGold(int newGold);
 	void setHealth(int newHealth);
 	void setLevel(int newLevel);
-	void setPlayerBattlers(std::vector<Battlers> newPlayerBattlers);
+
+
+	void diplayStats();
 
 };

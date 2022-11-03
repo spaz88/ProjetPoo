@@ -1,11 +1,14 @@
 #include "Player.h"
 
-Player::Player(std::string name, int health, int gold, int level, std::vector<Battlers> playerBattlers) {
+Player::Player() {
+
+}
+
+Player::Player(std::string name, int health, int gold, int level) {
 	this->name = name;
 	this->health = health;
 	this->gold = gold;
 	this->level = level;
-	this->playerBattlers = playerBattlers;
 }
 
 int Player::getGold() {
@@ -17,9 +20,6 @@ int Player::getHealth() {
 int Player::getLevel() {
 	return this->level;
 }
-std::vector<Battlers> Player::getPlayerBattlers() {
-	return this->playerBattlers;
-}
 
 void Player::setGold(int newGold) {
 	this->gold = newGold;
@@ -30,6 +30,8 @@ void Player::setHealth(int newHealth) {
 void Player::setLevel(int newLevel) {
 	this->level = newLevel;
 }
-void Player::setPlayerBattlers(std::vector<Battlers> newPlayerBattlers) {
-	this->playerBattlers = newPlayerBattlers;
+
+void Player::diplayStats() {
+	std::cout << "Player : " << this->name << "		Gold : " << this->gold << "			Level : " << this->level << std::endl;
 }
+
