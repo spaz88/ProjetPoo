@@ -1,0 +1,8 @@
+﻿  Battlers.cpp
+  Deck.cpp
+C:\Users\Doryan\Documents\GitHub\ProjetPoo\ProjetPooJeux\ProjetPooJeux\Deck.cpp(18,35): warning C4267: '=' : conversion de 'size_t' en 'int', perte possible de données
+  Game.cpp
+  Player.cpp
+  ProjetPooJeux.cpp
+  Génération de code en cours...
+C:\Users\Doryan\Documents\GitHub\ProjetPoo\ProjetPooJeux\ProjetPooJeux\Game.cpp(10): error C4716: 'Game::buyingPhase' : doit retourner une valeur

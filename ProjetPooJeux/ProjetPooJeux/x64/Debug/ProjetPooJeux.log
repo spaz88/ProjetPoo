@@ -1,5 +1,0 @@
-﻿  Battlers.cpp
-  ProjetPooJeux.cpp
-C:\Users\spaz\Documents\Github Repos\ProjetPoo\ProjetPooJeux\ProjetPooJeux\ProjetPooJeux.cpp(7,12): warning C4930: 'Player player1(void)' : fonction prototypée non appelée (était-ce la définition de variable souhaitée ?)
-  Génération de code en cours...
-  ProjetPooJeux.vcxproj -> C:\Users\spaz\Documents\Github Repos\ProjetPoo\ProjetPooJeux\x64\Debug\ProjetPooJeux.exe
