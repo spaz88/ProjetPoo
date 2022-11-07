@@ -1,5 +1,12 @@
 #include "Deck.h"
 
+Battlers battler1("number1", 1, 10, 3);
+Battlers battler2("number2", 1, 10, 3);
+Battlers battler3("number3", 1, 10, 3);
+Battlers battler4("number4", 1, 10, 3);
+Battlers battler5("number5", 1, 10, 3);
+Battlers battler6("number6", 1, 10, 3);
+
 Deck::Deck() {
 	gameDeck.push_back(battler1);
 	gameDeck.push_back(battler2);
@@ -9,4 +16,7 @@ Deck::Deck() {
 	gameDeck.push_back(battler6);
 
 	numberOfCards = playerDeck.size();
+}
+void Deck::setPlayerDeck(Battlers battler, int i){
+	playerDeck[i] = battler;
 }
