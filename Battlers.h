@@ -15,5 +15,10 @@ public:
 
 
 	void diplayCard();
+
+	std::string getName() { return this->name; };
+	int getDamage() { return this->damage; };
+	int getHealth() { return this->health; };
+	int getPrice() { return this->price; };
 };
 

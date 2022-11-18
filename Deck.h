@@ -3,7 +3,7 @@
 #include "Battlers.h"
 #include <vector>
 
-class Deck : public Battlers
+class Deck
 {
 private:
 	std::vector<Battlers> playerDeck;
@@ -17,7 +17,8 @@ public:
 	void addBattler(int i) { playerDeck.push_back(gameDeck[i]); };
 
 	std::vector<Battlers> getPlayerDeck(){return playerDeck;};
-	void setPlayerDeck(Battlers battler, int i);
+	void addBattlersPLayerDeck(Battlers battler) { playerDeck.push_back(battler); };
+	void removePlayerBattler(int playerChoice) { playerDeck.erase(playerDeck.begin() + playerChoice); };
 	std::vector<Battlers> getGameDeck(){return gameDeck;};
 };
 

@@ -1,7 +1,10 @@
 #include "Player.h"
 
 Player::Player() {
-
+	Player::name = "";
+	Player::health = 0;
+	Player::gold = 0;
+	Player::level = 0;
 }
 
 Player::Player(std::string name, int health, int gold, int level) {
@@ -28,7 +31,7 @@ void Player::setHealth(int newHealth) {
 	this->health = newHealth;
 }
 void Player::setLevel(int newLevel) {
-	this->level = newLevel;
+	this->level =+ newLevel;
 }
 
 void Player::diplayStats() {

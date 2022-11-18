@@ -5,6 +5,5 @@
 int main()
 {
   Game newGame;
-  newGame.buyingPhase();
 }
 

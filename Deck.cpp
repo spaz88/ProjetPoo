@@ -8,15 +8,12 @@ Battlers battler5("number5", 1, 10, 3);
 Battlers battler6("number6", 1, 10, 3);
 
 Deck::Deck() {
-	gameDeck.push_back(battler1);
-	gameDeck.push_back(battler2);
-	gameDeck.push_back(battler3);
-	gameDeck.push_back(battler4);
-	gameDeck.push_back(battler5);
-	gameDeck.push_back(battler6);
+	Deck::gameDeck.push_back(battler1);
+	Deck::gameDeck.push_back(battler2);
+	Deck::gameDeck.push_back(battler3);
+	Deck::gameDeck.push_back(battler4);
+	Deck::gameDeck.push_back(battler5);
+	Deck::gameDeck.push_back(battler6);
 
-	numberOfCards = playerDeck.size();
-}
-void Deck::setPlayerDeck(Battlers battler, int i){
-	playerDeck[i] = battler;
+	Deck::numberOfCards = Deck::playerDeck.size();
 }
