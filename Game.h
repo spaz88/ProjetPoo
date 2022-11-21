@@ -6,8 +6,8 @@ class Game
 {
 public:
 	Game();
-	bool buyingPhase();
-	bool attackPhase();
+	void buyingPhase();
+	void attackPhase();
 	void sellMode();
 
 	void topText() {
