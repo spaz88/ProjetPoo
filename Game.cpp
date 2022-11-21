@@ -37,7 +37,7 @@ Game::Game() {
 	}
 }
 
-bool Game::buyingPhase() {
+void Game::buyingPhase() {
 
 	signed int playerChoice = 1;
 
@@ -48,7 +48,7 @@ bool Game::buyingPhase() {
 				std::cout << "Choose which card you want from 1 to 6" << std::endl;
 
 				std::vector<Battlers> currentGameDeck = deck.getGameDeck();
-				for (int i = 0; i < currentGameDeck.size(); i++) {
+				for (int i = 0; i < (int)currentGameDeck.size(); i++) {
 					currentGameDeck[i].diplayCard();
 				}																		//problem : la carte 1 (2) se met automatiauement dedan car initialise a 1, faire un condition pour rentrer un nombre entre 0 et 6
 				player1.diplayStats();
@@ -74,23 +74,21 @@ bool Game::buyingPhase() {
 		}
 
 	}
-	return 1;
 }
 
-bool Game::attackPhase() {
+void Game::attackPhase() {
 	std::vector<Battlers> currentPlayerDeck = deck.getPlayerDeck();
 
-	for (int i = 0; i < currentPlayerDeck.size(); i++) {
+	for (int i = 0; i < (int)currentPlayerDeck.size(); i++) {
 		currentPlayerDeck[i].diplayCard();
 	}
-	return 1;
 }
 
 void Game::sellMode() {
 	std::vector<Battlers> currentPlayerDeck = deck.getPlayerDeck();
 	signed int playerChoice = 0;
 
-	for (int i = 0; i < currentPlayerDeck.size(); i++) {
+	for (int i = 0; i < (int)currentPlayerDeck.size(); i++) {
 		currentPlayerDeck[i].diplayCard();
 	}
 
@@ -111,7 +109,7 @@ void Game::sellMode() {
 
 		std::vector<Battlers> currentPlayerDeck = deck.getPlayerDeck();
 
-		for (int i = 0; i < currentPlayerDeck.size(); i++) {
+		for (int i = 0; i < (int)currentPlayerDeck.size(); i++) {
 			currentPlayerDeck[i].diplayCard();
 		}
 		player1.diplayStats();
