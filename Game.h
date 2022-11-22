@@ -2,15 +2,16 @@
 #include "Player.h"
 #include "Deck.h"
 #include "Battlers.h"
-class Game 
+class Game
 {
 public:
 	Game();
 	void buyingPhase();
-	void attackPhase();
+	void attackPhase(Player, Player);
 	void sellMode();
 
-	void topText() {
+	void topText()
+	{
 		std::cout << "______             _____                      " << std::endl;
 		std::cout << "| ___ \\           |  __ \\                     " << std::endl;
 		std::cout << "| |_/ /__   ___   | |  \\ __ _ _ __ ___   ___ " << std::endl;
@@ -21,4 +22,3 @@ public:
 		std::cout << "**********************************************" << std::endl;
 	}
 };
-

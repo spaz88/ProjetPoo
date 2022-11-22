@@ -7,7 +7,8 @@ Battlers battler4("number4", 1, 10, 3);
 Battlers battler5("number5", 1, 10, 3);
 Battlers battler6("number6", 1, 10, 3);
 
-Deck::Deck() {
+Deck::Deck()
+{
 	Deck::gameDeck.push_back(battler1);
 	Deck::gameDeck.push_back(battler2);
 	Deck::gameDeck.push_back(battler3);

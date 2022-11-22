@@ -7,12 +7,10 @@ private:
 	int damage;
 	int health;
 	int price;
-	
 
 public:
 	Battlers(std::string name, int damage, int health, int price);
 	Battlers();
-
 
 	void diplayCard();
 
@@ -21,4 +19,3 @@ public:
 	int getHealth() { return this->health; };
 	int getPrice() { return this->price; };
 };
-

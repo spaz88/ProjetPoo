@@ -6,7 +6,6 @@
 class Player
 {
 private:
-
 	int health;
 	int gold;
 	int level;
@@ -28,7 +27,5 @@ public:
 	void setHealth(int newHealth);
 	void setLevel(int newLevel);
 
-
 	void diplayStats();
-
 };
