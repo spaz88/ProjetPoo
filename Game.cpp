@@ -42,7 +42,7 @@ Game::Game()
 
 		if (playerChoice == 3)
 		{
-			Game::attackPhase();
+			Game::attackPhase(player1, player2);
 		}
 	}
 }
@@ -80,7 +80,7 @@ void Game::buyingPhase()
 
 				if (player1.getGold() >= currentGameDeck[playerChoice - 1].getPrice())
 				{
-					deckPlayer1.addBattlersPLayerDeck(currentGameDeck[playerChoice - 1]);
+					deckPlayer1.addBattlersPlayerDeck(currentGameDeck[playerChoice - 1]);
 					player1.setGold(player1.getGold() - currentGameDeck[playerChoice - 1].getPrice());
 					std::cout << "Price : " << currentGameDeck[playerChoice - 1].getPrice() << std::endl;
 					std::cout << "Money : " << player1.getGold() << std::endl;
@@ -151,5 +151,5 @@ void Game::attackPhase(Player player1, Player player2)
 		int p1 = rand() % 100;
 		int p2 = rand() % 100;
 	}
-	player1.getPlayerDeck().
+	player1.getPlayerDeck();
 }
