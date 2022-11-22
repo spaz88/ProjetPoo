@@ -86,7 +86,7 @@ void Game::buyingPhase()
 				// -> We display the user's datas
 				if (player1.getGold() >= currentGameDeck[playerChoice - 1].getPrice())
 				{
-					deckPlayer1.addBattlersPlayerDeck(currentGameDeck[playerChoice - 1]);
+					deckPlayer1.addBattlersInventory(currentGameDeck[playerChoice - 1]);
 					player1.setGold(player1.getGold() - currentGameDeck[playerChoice - 1].getPrice());
 					std::cout << "Price : " << currentGameDeck[playerChoice - 1].getPrice() << std::endl;
 					std::cout << "Money : " << player1.getGold() << std::endl;
@@ -106,13 +106,13 @@ void Game::buyingPhase()
 void Game::sellMode()
 {
 
-	std::vector<Battlers> currentPlayerDeck = deck.getPlayerDeck();
+	std::vector<Battlers> currentPlayerInventory = deck.getInventory();
 	signed int playerChoice = 0;
 
 	// We're displaying the user's cards
-	for (int i = 0; i < (int)currentPlayerDeck.size(); i++)
+	for (int i = 0; i < (int)currentPlayerInventory.size(); i++)
 	{
-		currentPlayerDeck[i].diplayCard();
+		currentPlayerInventory[i].diplayCard();
 	}
 
 	std::cout << "Which card would you like to sell ?" << std::endl
@@ -130,17 +130,17 @@ void Game::sellMode()
 		if (answer == 'y')
 		{
 			playerChoice -= 1;
-			deck.removePlayerBattler(playerChoice);
+			deck.removeBattlerInventory(playerChoice);
 			// player1.setGold(player1.getGold() + currentPlayerDeck[playerChoice].getPrice());
 			player1.setGold(player1.getGold() + 1); // Seeling only bring back1 gold
 		}
 
 		// We'll display the new deck (without the on we sold)
-		std::vector<Battlers> currentPlayerDeck = deck.getPlayerDeck();
+		std::vector<Battlers> currentPlayerInventory = deck.getPlayerDeck();
 
-		for (int i = 0; i < (int)currentPlayerDeck.size(); i++)
+		for (int i = 0; i < (int)currentPlayerInventory.size(); i++)
 		{
-			currentPlayerDeck[i].diplayCard();
+			currentPlayerInventory[i].diplayCard();
 		}
 		player1.diplayStats();
 		std::cout << "Which card would you like to sell ? (0 to exit)" << std::endl
@@ -239,5 +239,24 @@ void Game::checkWinner(Deck deckPlayer1,Deck deckPlayer2)
 	else{
 		return;
 	}
+
+}
+
+void Game::manageInventory(){
+
+	std::cout<<"Inventory :"<<std::endl;
+
+	for(int i = 0; i < player1.getPlayerInventory().getInventory().size(); i++){
+		player1.getPlayerInventory().getInventory()[i].diplayCard();
+	}
+
+	std::cout<<"-------------------------------------------------------------------"<<std::endl;
+
+	for(int i = 0; i < player1.getPlayerDeck().getPlayerDeck().size(); i++){
+		player1.getPlayerInventory().getInventory()[i].diplayCard();
+	}
+
+	std::cout<<"Choose "<<std::endl<<": ";
+
 
 }

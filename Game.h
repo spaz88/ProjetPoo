@@ -8,6 +8,7 @@ public:
 	Game();
 	void buyingPhase();
 	void attackPhase(Deck, Deck);
+	void manageInventory();
 	void sellMode();
 
 	void topText()
