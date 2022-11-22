@@ -154,14 +154,14 @@ void Game::attackPhase(Deck deckPlayer1, Deck deckPlayer2)
 {
 	// make rand be random
 	srand(time(NULL));
-	int p1, p2, i;
+	int p1, p2, i,turn;
 	// We're choosing which player will attack first
 	p1 = rand() % 100;
 	p2 = rand() % 100;
 	i = 0;
-	int turn = 0;
+	turn = 0;
 
-	while (p1 == p2)
+	while(p1 == p2)
 	{
 		int p1 = rand() % 100;
 		int p2 = rand() % 100;
@@ -169,8 +169,9 @@ void Game::attackPhase(Deck deckPlayer1, Deck deckPlayer2)
 
 	std::cout << "p1 :" << p1 << std::endl;
 	std::cout << "p2 :" << p2 << std::endl;
-	std::cout << "p1deck :" << deckPlayer1.getGameDeck().size() << std::endl;
-	std::cout << "p2deck :" << deckPlayer1.getGameDeck().size()<< std::endl;
+	std::cout << "p1deck :" << deckPlayer1.getPlayerDeck().size() << std::endl;
+	std::cout << "p2deck :" << deckPlayer1.getPlayerDeck().size()<< std::endl;
+	
 	while (deckPlayer1.getPlayerDeck().size() != 0 && deckPlayer2.getPlayerDeck().size() != 0) // while both players have battlers
 	{
 		if (p1 > p2)
@@ -217,11 +218,12 @@ void Game::attackPhase(Deck deckPlayer1, Deck deckPlayer2)
 		}
 		turn++;
 	}
+	std::cout << "end of attack phase" << std::endl;
 }
 
 void Game::checkWinner(Deck deckPlayer1,Deck deckPlayer2)
 {
-	//check the win and the draw
+	// check the win and the draw
 	if (deckPlayer1.getPlayerDeck().size() == 0 && deckPlayer2.getPlayerDeck().size() == 0) 
 	{
 		std::cout << "Draw" << std::endl;
