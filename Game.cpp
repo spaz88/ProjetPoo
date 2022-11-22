@@ -1,8 +1,12 @@
 #include "Game.h"
+#include <stdlib.h>
 
 Deck deck;
 Player player1("joueur1", 30, 10, 1);
 Player player2("joueur2", 30, 0, 1);
+
+Deck deckPlayer1 = player1.getPlayerDeck();
+Deck deckPlayer2 = player2.getPlayerDeck();
 
 Game::Game() {
 	Game::topText();
@@ -50,7 +54,7 @@ void Game::buyingPhase() {
 				std::vector<Battlers> currentGameDeck = deck.getGameDeck();
 				for (int i = 0; i < (int)currentGameDeck.size(); i++) {
 					currentGameDeck[i].diplayCard();
-				}																		//problem : la carte 1 (2) se met automatiauement dedan car initialise a 1, faire un condition pour rentrer un nombre entre 0 et 6
+				}																		
 				player1.diplayStats();
 
 
@@ -63,8 +67,10 @@ void Game::buyingPhase() {
 				}
 
 				if (player1.getGold() >= currentGameDeck[playerChoice-1].getPrice()) {
-					deck.addBattlersPLayerDeck(currentGameDeck[playerChoice-1]);
+					deckPlayer1.addBattlersPLayerDeck(currentGameDeck[playerChoice-1]);
 					player1.setGold(player1.getGold() - currentGameDeck[playerChoice-1].getPrice());
+					std::cout<<"Price : "<<currentGameDeck[playerChoice-1].getPrice()<<std::endl;
+					std::cout<<"Money : "<<player1.getGold()<<std::endl;
 				}
 				
 			}
@@ -74,14 +80,8 @@ void Game::buyingPhase() {
 		}
 
 	}
-}
-
-void Game::attackPhase() {
-	std::vector<Battlers> currentPlayerDeck = deck.getPlayerDeck();
-
-	for (int i = 0; i < (int)currentPlayerDeck.size(); i++) {
-		currentPlayerDeck[i].diplayCard();
-	}
+	std::cout<<deckPlayer1.getPlayerDeck().size()<<std::endl;
+	std::cout<<deckPlayer2.getPlayerDeck().size()<<std::endl;
 }
 
 void Game::sellMode() {
@@ -117,4 +117,17 @@ void Game::sellMode() {
 		std::cin >> playerChoice;
 	}
 
+}
+
+void Game::attackPhase() {
+	std::vector<Battlers> currentPlayerDeck = deck.getPlayerDeck();
+
+	/*int p1 = rand() % 100, p2 = rand() % 100;;
+	
+	while(p1 == p2){
+		int p1 = rand() % 100;
+		int p2 = rand() % 100;
+	}*/
+
+	
 }

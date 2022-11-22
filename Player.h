@@ -17,12 +17,12 @@ public:
 	Player(std::string name, int health, int gold, int level);
 	Player();
 
-	Deck* playerDeck;
+	Deck playerDeck;
 
 	int getGold();
 	int getHealth();
 	int getLevel();
-	Deck* getPlayerDeck() { return playerDeck; };
+	Deck getPlayerDeck() { return playerDeck; };
 
 	void setGold(int newGold);
 	void setHealth(int newHealth);
