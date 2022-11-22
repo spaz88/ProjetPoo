@@ -21,5 +21,5 @@ public:
 		std::cout << "                                              " << std::endl;
 		std::cout << "**********************************************" << std::endl;
 	}
-	
+	void checkWinner(Deck, Deck);
 };
