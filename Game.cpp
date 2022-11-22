@@ -42,7 +42,7 @@ Game::Game()
 
 		if (playerChoice == 3)
 		{
-			Game::attackPhase(player1, player2);
+			Game::attackPhase(player1.getPlayerDeck(), player2.getPlayerDeck());
 		}
 	}
 }
@@ -137,19 +137,101 @@ void Game::sellMode()
 	}
 }
 
-void Game::attackPhase(Player player1, Player player2)
+void Game::attackPhase(Deck deckPlayer1, Deck deckPlayer2)
 {
-	std::vector<Battlers> currentPlayerDeck = deck.getPlayerDeck();
 	// make rand be random
 	srand(time(NULL));
 	int p1, p2;
 	p1 = rand() % 100;
 	p2 = rand() % 100;
-
+	int turn = 0;
 	while (p1 == p2)
 	{
 		int p1 = rand() % 100;
 		int p2 = rand() % 100;
 	}
-	player1.getPlayerDeck();
+	while(deckPlayer1.getPlayerDeck().size() != 0 && deckPlayer2.getPlayerDeck().size() != 0)// while both players have battlers
+	{
+		if (p1 > p2)
+		{
+			turn = 1;
+		}
+		else
+		{
+			turn = 2;
+		}
+		if (turn == 1)
+		{
+			std::cout << "Player 1's turn" << std::endl;
+			// choose a random battler from player 1's deck
+			int randomBattler = rand() % deckPlayer1.getPlayerDeck().size();
+			// choose a random battler from player 2's deck
+			int randomBattler2 = rand() % deckPlayer2.getPlayerDeck().size();
+			// attack the random battler from player 2's deck
+			deckPlayer2.getPlayerDeck()[randomBattler2].setHealth(deckPlayer2.getPlayerDeck()[randomBattler2].getHealth() - deckPlayer1.getPlayerDeck()[randomBattler].getAttack());
+			// if the health of the battler is 0 or less, remove it from the deck
+			if (deckPlayer2.getPlayerDeck()[randomBattler2].getHealth() <= 0)
+			{
+				deckPlayer2.removePlayerBattler(randomBattler2);
+			}
+			// if the deck is empty, the player loses
+			if (deckPlayer2.getPlayerDeck().size() == 0)
+			{
+				std::cout << "Player 1 wins" << std::endl;
+				break;
+			}
+			// if the deck is not empty, the player continues
+			else
+			{
+				std::cout << "Player 2's turn" << std::endl;
+				// choose a random battler from player 2's deck
+				int randomBattler = rand() % deckPlayer2.getPlayerDeck().size();
+				// choose a random battler from player 1's deck
+				int randomBattler2 = rand() % deckPlayer1.getPlayerDeck().size();
+				// attack the random battler from player 1's deck
+				deckPlayer1.getPlayerDeck()[randomBattler2].setHealth(deckPlayer1.getPlayerDeck()[randomBattler2].getHealth() - deckPlayer2.getPlayerDeck()[randomBattler].getAttack());
+				// if the health of the battler is 0
+	{
+		if (turn % 2 == 0 || p1 > p2)
+		{
+			if (p1 > p2)
+				p1 = p2;
+
+			deckPlayer2.getGameDeck()[r].setHealth(deckPlayer2.getGameDeck()[r].getHealth() - deckPlayer1.getGameDeck()[i].getDamage());
+			if (deckPlayer2.getGameDeck()[0].getHealth() <= 0)
+			{
+				deckPlayer2.removePlayerBattler(0);
+			}
+			deckPlayer1.getGameDeck()[i].setHealth(deckPlayer1.getGameDeck()[i].getHealth() - deckPlayer2.getGameDeck()[r].getDamage());
+			if (deckPlayer1.getGameDeck()[0].getHealth() <= 0)
+			{
+				deckPlayer1.removePlayerBattler(0);
+			}
+			turn++;
+		}
+		else
+		{
+			deckPlayer1.getGameDeck()[0].setHealth(deckPlayer1.getGameDeck()[0].getHealth() - deckPlayer2.getGameDeck()[0].getDamage());
+			if (deckPlayer1.getGameDeck()[0].getHealth() <= 0)
+			{
+				deckPlayer1.removePlayerBattler(0);
+			}
+			deckPlayer2.getGameDeck()[0].setHealth(deckPlayer2.getGameDeck()[0].getHealth() - deckPlayer1.getGameDeck()[0].getDamage());
+			if (deckPlayer2.getGameDeck()[0].getHealth() <= 0)
+			{
+				deckPlayer2.removePlayerBattler(0);
+			}
+						turn++;
+
+		}
+	}
+
+	if (deckPlayer1.getGameDeck().size() == 0 && deckPlayer1.getGameDeck().size() == 0)
+		std::cout << "DRAW" << std::endl;
+
+	else if (deckPlayer1.getGameDeck().size() == 0)
+		std::cout << "Player 2 win" << std::endl;
+
+	else
+		std::cout << "Player 1 win" << std::endl;
 }

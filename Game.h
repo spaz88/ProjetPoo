@@ -7,7 +7,7 @@ class Game
 public:
 	Game();
 	void buyingPhase();
-	void attackPhase(Player, Player);
+	void attackPhase(Deck, Deck);
 	void sellMode();
 
 	void topText()
@@ -21,4 +21,5 @@ public:
 		std::cout << "                                              " << std::endl;
 		std::cout << "**********************************************" << std::endl;
 	}
+	
 };
