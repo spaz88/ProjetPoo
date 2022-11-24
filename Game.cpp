@@ -2,11 +2,12 @@
 #include <stdlib.h>
 
 Deck deck;
-Player player1("joueur1", 20, 10, 1);
-Player player2("joueur2", 20, 0, 1);
+Player player1("joueur1", 20, 3, 1);
+Player player2("joueur2", 20, 3, 1);
 
-Deck deckPlayer1 = player1.getPlayerDeck();
-Deck deckPlayer2 = player2.getPlayerDeck();
+Deck tabDeck[2] = {player1.getPlayerDeck(), player2.getPlayerDeck()};
+
+int prixLv = 10;
 
 Game::Game()
 {
@@ -15,10 +16,11 @@ Game::Game()
 	signed int playerChoice = 0;
 	while (true)
 	{
-
+		// Player's choice
 		std::cout << "1) Buy cards" << std::endl;
 		std::cout << "2) Sell cards" << std::endl;
-		std::cout << "3) Skip buying phase" << std::endl;
+		std::cout << "3) Manage inventory" << std::endl;
+		std::cout << "4) Skip buying phase" << std::endl;
 		std::cout << ": ";
 
 		std::cin >> playerChoice;
@@ -40,8 +42,11 @@ Game::Game()
 		}
 		else if (playerChoice == 3)
 		{
-			Game::attackPhase(deckPlayer1, deckPlayer2);
-			std::cout << "Test attack Phase passed" << std::endl;
+			Game::manageInventory();
+		}
+		else if (playerChoice == 3)
+		{
+			Game::attackPhase(tabDeck);
 		}
 	}
 }
@@ -53,14 +58,25 @@ void Game::buyingPhase()
 
 	std::vector<Battlers> currentGameDeck = deck.getGameDeck();
 
-	while (playerChoice != 0 && playerChoice < 7)
+	while (playerChoice != 0 && playerChoice < 8)
 	{
-		if (playerChoice < 6 || playerChoice >= 0)
+		if (playerChoice < 8 || playerChoice > 0)
 		{
 			if (player1.getGold() > 0)
 			{
 
 				std::cout << "Choose which card you want from 1 to 6" << std::endl;
+				std::cout << "Or choose 7 to upgrade your level" << std::endl;
+
+				// Here, we're upgrading the player's level in order to allow him to buy more powerfull battler
+				/*prixLv--;
+				int prixAffichage = player1.getLevel() + 1;
+				std::cout << "The current cost to upgrade to lv " + std::to_string(prixAffnuichage) + " is " + std::to_string(prixLv) << std::endl;
+				if(playerChoice == 7 && player1.getGold() > prixLv) {
+					player1.setLevel(player1.getLevel() + 1);
+				} else {
+					std::cout << "LOOOL, you don't have enough gold for that, who u think u are è_è - looser";
+				}*/
 
 				// Display the player card
 				std::vector<Battlers> currentGameDeck = deck.getGameDeck();
@@ -70,8 +86,7 @@ void Game::buyingPhase()
 				}
 				player1.diplayStats();
 
-				std::cout << std::endl
-						  << "Enter 0 to exit" << std::endl;
+				std::cout << "Enter 0 to exit" << std::endl;
 
 				std::cin >> playerChoice;
 
@@ -86,7 +101,7 @@ void Game::buyingPhase()
 				// -> We display the user's datas
 				if (player1.getGold() >= currentGameDeck[playerChoice - 1].getPrice())
 				{
-					deckPlayer1.addBattlersInventory(currentGameDeck[playerChoice - 1]);
+					tabDeck[0].addBattlersInventory(currentGameDeck[playerChoice - 1]);
 					player1.setGold(player1.getGold() - currentGameDeck[playerChoice - 1].getPrice());
 					std::cout << "Price : " << currentGameDeck[playerChoice - 1].getPrice() << std::endl;
 					std::cout << "Money : " << player1.getGold() << std::endl;
@@ -98,8 +113,8 @@ void Game::buyingPhase()
 			std::cout << "Choose a valid number between 0 and 6" << std::endl;
 		}
 	}
-	deckPlayer2.addBattlersPlayerDeck(currentGameDeck[0]);
-	deckPlayer2.addBattlersPlayerDeck(currentGameDeck[1]);
+	tabDeck[1].addBattlersPlayerDeck(currentGameDeck[0]);
+	tabDeck[1].addBattlersPlayerDeck(currentGameDeck[1]);
 }
 
 // Selling phase function - Here, the player will be able to sell card in exchange of 1 gold
@@ -150,18 +165,18 @@ void Game::sellMode()
 }
 
 // Attack Phase - The combat is here
-void Game::attackPhase(Deck deckPlayer1, Deck deckPlayer2)	
+void Game::attackPhase(Deck tabDeck[])
 {
 	// make rand be random
 	srand(time(NULL));
-	int p1, p2, i,turn;
-	// We're choosing which player will attack first
+	int p1, p2, i, turn;
+	// We are choosing which player will attack first
 	p1 = rand() % 100;
 	p2 = rand() % 100;
 	i = 0;
 	turn = 0;
-
-	while(p1 == p2)
+	// making
+	while (p1 == p2)
 	{
 		int p1 = rand() % 100;
 		int p2 = rand() % 100;
@@ -169,94 +184,120 @@ void Game::attackPhase(Deck deckPlayer1, Deck deckPlayer2)
 
 	std::cout << "p1 :" << p1 << std::endl;
 	std::cout << "p2 :" << p2 << std::endl;
-	std::cout << "p1deck :" << deckPlayer1.getPlayerDeck().size() << std::endl;
-	std::cout << "p2deck :" << deckPlayer1.getPlayerDeck().size()<< std::endl;
-	
-	while (deckPlayer1.getPlayerDeck().size() != 0 && deckPlayer2.getPlayerDeck().size() != 0) // while both players have battlers
+	std::cout << "p1deck :" << tabDeck[0].getPlayerDeck().size() << std::endl;
+	std::cout << "p2deck :" << tabDeck[0].getPlayerDeck().size() << std::endl;
+
+	while (tabDeck[0].getPlayerDeck().size() != 0 && tabDeck[1].getPlayerDeck().size() != 0) // while both players have battlers
 	{
+		int attackBattler = i;
+		int randomVictim = rand() % tabDeck[i % 2].getPlayerDeck().size();
+
 		if (p1 > p2)
 		{
-					std::cout << "p1 > p2"<< std::endl;
-
-			turn = 1;
-		}
-		std::cout << "before if % 2" << std::endl;
-		if (turn % 2 != 0 || p1 > p2)
-		{
-			if (p1 != p2)
+			// p1 attack first
+			p1 = p2;
+			tabDeck[1].getPlayerDeck()[randomVictim].setHealth(tabDeck[1].getPlayerDeck()[randomVictim].getHealth() - tabDeck[0].getPlayerDeck()[attackBattler].getDamage());
+			if (tabDeck[1].getPlayerDeck()[randomVictim].getHealth() <= 0)
 			{
-				p1 = p2;
+				std::cout << tabDeck[0].getPlayerDeck()[attackBattler].getName() << " killed " << tabDeck[1].getPlayerDeck()[randomVictim].getName() << std::endl;
+				tabDeck[1].removePlayerBattler(randomVictim);
 			}
-			std::cout << "p1 :" << p1 << std::endl;
-			std::cout << "p2 :" << p2 << std::endl;
-			std::cout << "Player 1's turn" << std::endl;
-			// choose the first battler from player 1's deck
-			int randomBattler1 = i;
-			// choose a random battler from player 2's deck
-			int randomBattler2 = rand() % deckPlayer2.getPlayerDeck().size();
-			// attack the random battler from player 2's deck
-			deckPlayer2.getPlayerDeck()[randomBattler2].setHealth(deckPlayer2.getPlayerDeck()[randomBattler2].getHealth() - deckPlayer1.getPlayerDeck()[randomBattler1].getDamage());
-			// if the health of the battler is 0 or less, remove it from the deck
-			if (deckPlayer2.getPlayerDeck()[randomBattler2].getHealth() <= 0)
-			{
-				deckPlayer2.removePlayerBattler(randomBattler2);
-			}
-		checkWinner(deckPlayer1, deckPlayer2);
+			checkWinner(tabDeck);
 		}
 		else
 		{
-			// if the deck is not empty, the player continues
+			// vitctim take damage
 
-			std::cout << "Player 2's turn" << std::endl;
-			// choose a random battler from player 2's deck
-			int randomBattler1 = rand() % deckPlayer2.getPlayerDeck().size();
-			// choose a random battler from player 1's deck
-			int randomBattler2 = rand() % deckPlayer1.getPlayerDeck().size();
-			// attack the random battler from player 1's deck
-			deckPlayer1.getPlayerDeck()[randomBattler2].setHealth(deckPlayer1.getPlayerDeck()[randomBattler2].getHealth() - deckPlayer2.getPlayerDeck()[randomBattler1].getDamage());
-			checkWinner(deckPlayer1, deckPlayer2);
+			tabDeck[i % 2].getPlayerDeck()[randomVictim].setHealth(tabDeck[i % 2].getPlayerDeck()[randomVictim].getHealth() - tabDeck[abs(((i % 2) - 1))].getPlayerDeck()[attackBattler].getDamage());
+			std::cout << tabDeck[0].getPlayerDeck()[attackBattler].getName() << " attacked " << tabDeck[1].getPlayerDeck()[randomVictim].getName() << std::endl;
+			// attackant get victim damage if he is not dead and damage from vitcim are higher than the attackant damage
+			if (tabDeck[i % 2].getPlayerDeck()[randomVictim].getHealth() > 0 && tabDeck[i % 2].getPlayerDeck()[randomVictim].getDamage() > tabDeck[abs(((i % 2) - 1))].getPlayerDeck()[attackBattler].getDamage())
+			{
+				// attackant get the difference between the damage of the victim and his own damage
+				tabDeck[abs(((i % 2) - 1))].getPlayerDeck()[attackBattler].setHealth(tabDeck[abs(((i % 2) - 1))].getPlayerDeck()[attackBattler].getHealth() - (tabDeck[i % 2].getPlayerDeck()[randomVictim].getDamage() - tabDeck[abs(((i % 2) - 1))].getPlayerDeck()[attackBattler].getDamage()));
+			}
+
+			if (tabDeck[i % 2].getPlayerDeck()[randomVictim].getHealth() <= 0)
+			{
+				std::cout << tabDeck[abs((i % 2) - 1)].getPlayerDeck()[attackBattler].getName() << " killed " << tabDeck[i % 2].getPlayerDeck()[randomVictim].getName() << std::endl;
+				tabDeck[i % 2].removePlayerBattler(randomVictim);
+			}
+			checkWinner(tabDeck);
+			// p2 attack first
+			// and basic combat
 		}
-		turn++;
-	}
-	std::cout << "end of attack phase" << std::endl;
+		i++;
+		// add tour
+	} // p1 attack first
 }
 
-void Game::checkWinner(Deck deckPlayer1,Deck deckPlayer2)
+void Game::checkWinner(Deck tabDeck[])
 {
 	// check the win and the draw
-	if (deckPlayer1.getPlayerDeck().size() == 0 && deckPlayer2.getPlayerDeck().size() == 0) 
+	// Here, we're checking if a player still have battlers on the battlefield.
+	if (tabDeck[0].getPlayerDeck().size() == 0 && tabDeck[1].getPlayerDeck().size() == 0)
 	{
 		std::cout << "Draw" << std::endl;
 	}
-	else if (deckPlayer1.getPlayerDeck().size() == 0)
+	else if (tabDeck[0].getPlayerDeck().size() == 0)
 	{
 		std::cout << "Player 2 wins" << std::endl;
 	}
-	else if (deckPlayer2.getPlayerDeck().size() == 0)
+	else if (tabDeck[1].getPlayerDeck().size() == 0)
 	{
 		std::cout << "Player 1 wins" << std::endl;
 	}
-	else{
+	else
+	{
 		return;
 	}
-
 }
 
-void Game::manageInventory(){
+void Game::manageInventory()
+{
 
-	std::cout<<"Inventory :"<<std::endl;
+	int playerChoice = 0;
 
-	for(int i = 0; i < player1.getPlayerInventory().getInventory().size(); i++){
-		player1.getPlayerInventory().getInventory()[i].diplayCard();
+	std::cout << "Inventory :" << std::endl;
+
+	for (size_t i = 0; i < tabDeck[0].getPlayerDeck().size(); i++)
+	{
+		tabDeck[0].getPlayerDeck()[i].diplayCard();
 	}
 
-	std::cout<<"-------------------------------------------------------------------"<<std::endl;
+	std::cout << "-------------------------------------------------------------------" << std::endl;
 
-	for(int i = 0; i < player1.getPlayerDeck().getPlayerDeck().size(); i++){
-		player1.getPlayerInventory().getInventory()[i].diplayCard();
+	for (size_t i = 0; i < tabDeck[0].getInventory().size(); i++)
+	{
+		tabDeck[0].getInventory()[i].diplayCard();
 	}
 
-	std::cout<<"Choose "<<std::endl<<": ";
+	std::cout << "Choose which card you want to play" << std::endl
+			  << ": ";
 
+	std::cin >> playerChoice;
 
+	while (playerChoice != 0)
+	{
+		tabDeck[0].addBattlersPlayerDeck(tabDeck[0].getInventory()[playerChoice - 1]);
+
+		std::cout << "Inventory :" << std::endl;
+
+		for (size_t i = 0; i < tabDeck[0].getPlayerDeck().size(); i++)
+		{
+			tabDeck[0].getPlayerDeck()[i].diplayCard();
+		}
+
+		std::cout << "-------------------------------------------------------------------" << std::endl;
+
+		for (size_t i = 0; i < tabDeck[0].getInventory().size(); i++)
+		{
+			tabDeck[0].getInventory()[i].diplayCard();
+		}
+
+		std::cout << "Choose which card you want to play" << std::endl
+				  << ": ";
+
+		std::cin >> playerChoice;
+	}
 }

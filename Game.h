@@ -7,10 +7,10 @@ class Game
 public:
 	Game();
 	void buyingPhase();
-	void attackPhase(Deck, Deck);
+	void attackPhase(Deck[]);
 	void manageInventory();
 	void sellMode();
-
+	void dealDamageToPlayer();
 	void topText()
 	{
 		std::cout << "______             _____                      " << std::endl;
@@ -22,5 +22,5 @@ public:
 		std::cout << "                                              " << std::endl;
 		std::cout << "**********************************************" << std::endl;
 	}
-	void checkWinner(Deck, Deck);
+	void checkWinner(Deck[]);
 };
