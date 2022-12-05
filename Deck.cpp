@@ -22,7 +22,6 @@ Battlers battlers18("Django but chained", 4, 9, 3);
 Battlers battlers19("smartest student with alzheimer's", 5, 5, 3);
 Battlers battlers20("Mermaid whithout gill",5, 2, 3);
 Battlers battlers21("Thief without arm", 2, 2, 3);
-Battlers battlers22("Chuck Norris",INT64_MAX, INT64_MAX, INT64_MAX);
 // Battlers battlers23("Chinese samourai without leg", 4, 4, 3);
 
 Deck::Deck()

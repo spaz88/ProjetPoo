@@ -8,7 +8,9 @@ Battlers::Battlers(std::string name, int damage, int health, int price) {
 	this->price = price;
 }
 
-void Battlers::diplayCard() {
+void Battlers::displayCard() {
+	
+	
 	std::cout << "+--------------+" << std::endl;
 	std::cout << "|"<<"Name : " << this->name << "|" << std::endl;
 	std::cout << "|"<<"Damage : " << this->damage << "|" << std::endl;

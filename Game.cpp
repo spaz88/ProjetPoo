@@ -58,7 +58,7 @@ void Game::buyingPhase()
 
 	std::vector<Battlers> currentGameDeck = deck.getGameDeck();
 
-	while (playerChoice != 0 && playerChoice < 8)
+	while (playerChoice != 0)
 	{
 		if (playerChoice < 8 || playerChoice > 0)
 		{
@@ -75,15 +75,16 @@ void Game::buyingPhase()
 				if(playerChoice == 7 && player1.getGold() > prixLv) {
 					player1.setLevel(player1.getLevel() + 1);
 				} else {
-					std::cout << "LOOOL, you don't have enough gold for that, who u think u are è_è - looser";
+					std::cout << "LOOOL, you don't have enough gold for that, who u think u are è_é - looser";
 				}*/
 
 				// Display the player card
 				std::vector<Battlers> currentGameDeck = deck.getGameDeck();
-				for (int i = 0; i < (int)currentGameDeck.size(); i++)
+				for (int i = 0; i < currentGameDeck.size(); i++)
 				{
-					currentGameDeck[i].diplayCard();
+					currentGameDeck[i].displayCard();
 				}
+
 				player1.diplayStats();
 
 				std::cout << "Enter 0 to exit" << std::endl;
@@ -102,17 +103,27 @@ void Game::buyingPhase()
 				if (player1.getGold() >= currentGameDeck[playerChoice - 1].getPrice())
 				{
 					tabDeck[0].addBattlersInventory(currentGameDeck[playerChoice - 1]);
+					std::cout << "after addInventory" << std::endl;
+
 					player1.setGold(player1.getGold() - currentGameDeck[playerChoice - 1].getPrice());
+					std::cout << "after getPrice" << std::endl;
+
 					std::cout << "Price : " << currentGameDeck[playerChoice - 1].getPrice() << std::endl;
 					std::cout << "Money : " << player1.getGold() << std::endl;
 				}
+				std::cout << "after if 1" << std::endl;
 			}
+			std::cout << "after if 2" << std::endl;
 		}
+
 		else
 		{
 			std::cout << "Choose a valid number between 0 and 6" << std::endl;
 		}
+		std::cout << "after if 3" << std::endl;
 	}
+	std::cout << "after while" << std::endl;
+
 	tabDeck[1].addBattlersPlayerDeck(currentGameDeck[0]);
 	tabDeck[1].addBattlersPlayerDeck(currentGameDeck[1]);
 }
@@ -127,7 +138,7 @@ void Game::sellMode()
 	// We're displaying the user's cards
 	for (int i = 0; i < (int)currentPlayerInventory.size(); i++)
 	{
-		currentPlayerInventory[i].diplayCard();
+		currentPlayerInventory[i].displayCard();
 	}
 
 	std::cout << "Which card would you like to sell ?" << std::endl
@@ -155,7 +166,7 @@ void Game::sellMode()
 
 		for (int i = 0; i < (int)currentPlayerInventory.size(); i++)
 		{
-			currentPlayerInventory[i].diplayCard();
+			currentPlayerInventory[i].displayCard();
 		}
 		player1.diplayStats();
 		std::cout << "Which card would you like to sell ? (0 to exit)" << std::endl
@@ -262,14 +273,14 @@ void Game::manageInventory()
 
 	for (size_t i = 0; i < tabDeck[0].getPlayerDeck().size(); i++)
 	{
-		tabDeck[0].getPlayerDeck()[i].diplayCard();
+		tabDeck[0].getPlayerDeck()[i].displayCard();
 	}
 
 	std::cout << "-------------------------------------------------------------------" << std::endl;
 
 	for (size_t i = 0; i < tabDeck[0].getInventory().size(); i++)
 	{
-		tabDeck[0].getInventory()[i].diplayCard();
+		tabDeck[0].getInventory()[i].displayCard();
 	}
 
 	std::cout << "Choose which card you want to play" << std::endl
@@ -285,14 +296,14 @@ void Game::manageInventory()
 
 		for (size_t i = 0; i < tabDeck[0].getPlayerDeck().size(); i++)
 		{
-			tabDeck[0].getPlayerDeck()[i].diplayCard();
+			tabDeck[0].getPlayerDeck()[i].displayCard();
 		}
 
 		std::cout << "-------------------------------------------------------------------" << std::endl;
 
 		for (size_t i = 0; i < tabDeck[0].getInventory().size(); i++)
 		{
-			tabDeck[0].getInventory()[i].diplayCard();
+			tabDeck[0].getInventory()[i].displayCard();
 		}
 
 		std::cout << "Choose which card you want to play" << std::endl

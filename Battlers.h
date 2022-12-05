@@ -12,7 +12,7 @@ public:
 	Battlers(std::string name, int damage, int health, int price);
 	Battlers();
 
-	void diplayCard();
+	void displayCard();
 
 	std::string getName() { return this->name; };
 	// setter
