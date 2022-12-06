@@ -66,7 +66,7 @@ void Game::buyingPhase()
 			{
 
 				std::cout << "Choose which card you want from 1 to 6" << std::endl;
-				std::cout << "Or choose 7 to upgrade your level" << std::endl;
+				std::cout << "Or choose 7 to upgrade your leveclel" << std::endl;
 
 				// Here, we're upgrading the player's level in order to allow him to buy more powerfull battler
 				/*prixLv--;
@@ -114,8 +114,9 @@ void Game::buyingPhase()
 				std::cout << "after if 1" << std::endl;
 			}
 			std::cout << "after if 2" << std::endl;
+			std::cout << "Do you want to buy another card ?" << std::endl;
+			std::cin >> playerChoice;
 		}
-
 		else
 		{
 			std::cout << "Choose a valid number between 0 and 6" << std::endl;
@@ -132,7 +133,7 @@ void Game::buyingPhase()
 void Game::sellMode()
 {
 
-	std::vector<Battlers> currentPlayerInventory = deck.getInventory();
+	std::vector<Battlers> currentPlayerInventory = tabDeck[0].getInventory();
 	signed int playerChoice = 0;
 
 	// We're displaying the user's cards
@@ -148,12 +149,12 @@ void Game::sellMode()
 	while (playerChoice != 0)
 	{
 
-		char answer;
+		char answer[2];
 
 		std::cout << "Do you really want to delete the " << playerChoice << " card ? (y/n)" << std::endl;
 		std::cin >> answer;
 		// Selling the battler after the validation
-		if (answer == 'y')
+		if (answer[0] == 'y')
 		{
 			playerChoice -= 1;
 			deck.removeBattlerInventory(playerChoice);
