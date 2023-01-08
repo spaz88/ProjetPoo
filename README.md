@@ -1,12 +1,12 @@
 repos temporaire le temps que je finisse
 
 -Problème dans la fonction startTurn:
-	- remplir les battler d'une personne et ensuite passer a la suivante.
-	- revérifier les conditions dans le sujet
+    	- remplir les battler d'une personne et ensuite passer a la suivante.
+    	- revérifier les conditions dans le sujet
 	
 	-revoir cette partie :
 	
-	![image](https://user-images.githubusercontent.com/69171126/211220712-cee5709a-87ec-4ea7-bf12-26876f73f091.png)
+![image](https://user-images.githubusercontent.com/69171126/211220712-cee5709a-87ec-4ea7-bf12-26876f73f091.png)
 
 	
 - Faire fonction attaquer:
