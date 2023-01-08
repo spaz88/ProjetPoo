@@ -6,7 +6,7 @@ repos temporaire le temps que je finisse
 	
 	-revoir cette partie :
 	
-	![image](https://user-images.githubusercontent.com/69171126/211220541-a47348b7-cb62-451f-a8ae-e65381170b23.png)
+	![image](https://user-images.githubusercontent.com/69171126/211220712-cee5709a-87ec-4ea7-bf12-26876f73f091.png)
 
 	
 - Faire fonction attaquer:
