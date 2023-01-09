@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <numeric>
-#include <iostream>
 
 Game::Game() {
 	m_battlerList.push_back(Battler("truc1", 1, 10, 1, "goblin"));
@@ -29,7 +28,7 @@ void Game::startGame()
 		// Check if the game has ended
 		if (gameOver())
 		{
-			endGame();
+			endGame(); // ne fini pas le jeu
 			break;
 		}
 
@@ -44,15 +43,13 @@ void Game::startGame()
 void Game::startTurn()
 {
 	std::string choiceString;
-	// Increment gold of current player
-	m_players[indexCurrentPlayer].setGold(m_players[indexCurrentPlayer].getGold() + 1);
 
-	std::cout << "Player : " << indexCurrentPlayer << std::endl;
+	clearConsole();
 
 	while (true) {
 
 		// Prompt player to hire a battler
-		std::cout << "Do you want to hire a battler? (Y/N/Q): ";
+		std::cout << "Do you want to hire a battler? (Y/N): ";
 
 		//std::cout << m_players[indexCurrentPlayer].getHand().size() << std::endl;
 		std::cin >> choiceString;
@@ -82,13 +79,14 @@ void Game::startTurn()
 
 			// Hire chosen battler
 			hireBattler(m_battlerList[m_tabRandomBattlerNumber[choice -1]]);
+			clearConsole();
 		}
 
 		// Check if current player can upgrade tavern
 		if (m_players[indexCurrentPlayer].getGold() >= 5)
 		{
 			// Prompt player to upgrade Tavern
-			std::cout << "Do you want to upgrade your Tavern? (Y/N/Q): ";
+			std::cout << "Do you want to upgrade your Tavern? (Y/N): ";
 			std::cin >> choiceString;
 			if (choiceString == "Y" || choiceString == "y")
 			{
@@ -98,9 +96,10 @@ void Game::startTurn()
 		else {
 			std::cout << "Not enough gold to upgrade your Tavern" << std::endl;
 		}
+		clearConsole();
 
 			// Prompt player to dismiss a battler
-		std::cout << "Do you want to dismiss a battler? (Y/N/Q): ";
+		std::cout << "Do you want to dismiss a battler? (Y/N): ";
 		std::cin >> choiceString;
 		if (choiceString == "Y" || choiceString == "y")
 		{
@@ -119,6 +118,7 @@ void Game::startTurn()
 			// Dismiss chosen battler
 			dismissBattler(m_players[indexCurrentPlayer].getBattlers()[choice - 1]);
 		}
+		clearConsole();
 		std::cout << "Finish buying ? (Y/N)";
 		std::cin >> choiceString;
 		if (choiceString == "Y" || choiceString == "y") {
@@ -129,6 +129,7 @@ void Game::startTurn()
 
 void Game::endTurn()
 {
+	clearConsole();
 	std::cout << "Do you want to change your hand ?(Y/N)" << std::endl;
 	std::string choiceString;
 	std::cin >> choiceString;
@@ -139,6 +140,7 @@ void Game::endTurn()
 	if (choiceString == "y" || choiceString == "Y") {
 		while (true) {
 
+			clearConsole();
 			//Player can choose up to 4 Battlers in hand
 			std::cout << "Choose up to 4 battlers to put in battle (Enter q to quit)" << std::endl;
 			std::cout << "Battler list : " << std::endl;
@@ -165,6 +167,9 @@ void Game::endTurn()
 			}
 		}
 	}
+	
+	// Increment gold of current player
+	m_players[indexCurrentPlayer].setGold(m_players[indexCurrentPlayer].getGold() + 2 + m_turn);
 
 	if (indexCurrentPlayer == 1) {
 		attackTurn();
@@ -359,6 +364,7 @@ void Game::attackTurn() {
 			}
 		}
 	}
+	exit(0);
 }
 
 int Game::calculateHpLost(std::vector<Battler> playerBattler) {

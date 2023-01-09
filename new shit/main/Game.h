@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <iostream>
 #include "Player.h"
 #include "Battler.h"
 
@@ -22,6 +23,16 @@ public:
 	int calculateHpLost(std::vector<Battler> playerBattler);
 
 	bool gameOver();
+
+	void clearConsole() {
+#if defined(_WIN32)
+		{ system("cls"); 
+		std::cout << "Player : " << m_players[indexCurrentPlayer].getName() << "	Turn : " << m_turn << "	Money : " << m_players[indexCurrentPlayer].getGold() << "	Tavern tier : " << m_players[indexCurrentPlayer].getTavernTier() << std::endl; }
+#elif defined(__linux__)
+		{ system("clear"); std::cout << "Player : " << m_players[indexCurrentPlayer].getName() << "	Turn : " << m_turn << "	Money : " << m_players[indexCurrentPlayer].getGold() << "	Tavern tier : " << m_players[indexCurrentPlayer].getTavernTier() << std::endl; }
+	}
+#endif;
+	}
 
 private:
 	std::vector<Player> m_players;

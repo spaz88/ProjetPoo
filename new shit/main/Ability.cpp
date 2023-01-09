@@ -22,10 +22,10 @@ const std::string& Ability::getType() const
 	return m_type;
 }
 
-void Ability::setEffect(Battler& source, Battler& target, std::string type)
+void Ability::setEffect(Battler& source, Battler& target, std::string tribe)
 {
-	if (type == "poison")
+	/*if (type == "poison")
 	{
 		target.setHealth(target.getHealth() - 2);
-	}
+	}*/
 }
