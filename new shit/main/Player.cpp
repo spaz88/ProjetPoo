@@ -89,3 +89,7 @@ void Player::refreshHand()
         m_battlers.erase(m_battlers.begin() + index);
     }
 }
+
+void Player::addBattler(const Battler& battler) {
+	m_battlers.push_back(battler);
+}

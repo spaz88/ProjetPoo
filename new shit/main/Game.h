@@ -18,8 +18,10 @@ public:
 	void endGame();
 	bool gameOver();
 	void startTurn();
+
 private:
 	std::vector<Player> m_players;
 	std::vector<Battler> m_battlerList;
 	int indexCurrentPlayer;
+	int m_tabRandomBattlerNumber[10];
 };

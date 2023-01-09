@@ -17,6 +17,7 @@ public:
     void setGold(int gold);
     void setTavernTier(int tier);
     void setHP(int hp);
+    void addBattler(const Battler& battler);
     void addToHand(const Battler& battler);
     void addGold(int amount);
     void removeFromHand(const Battler& battler);
