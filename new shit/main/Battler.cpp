@@ -53,3 +53,4 @@ void Battler::setTribe(const std::string& tribe)
 {
 	m_tribe = tribe;
 }
+

@@ -16,12 +16,17 @@ public:
 	void startGame();
 	void endTurn();
 	void endGame();
-	bool gameOver();
 	void startTurn();
+	void attackTurn();
+
+	int calculateHpLost(std::vector<Battler> playerBattler);
+
+	bool gameOver();
 
 private:
 	std::vector<Player> m_players;
 	std::vector<Battler> m_battlerList;
 	int indexCurrentPlayer;
 	int m_tabRandomBattlerNumber[10];
+	int m_turn;
 };

@@ -20,8 +20,8 @@ Game::Game() {
 
 void Game::startGame()
 {
-	m_players.push_back(Player("Player 1", 3, 1, 20));
-	m_players.push_back(Player("Player 2", 3, 1, 20));
+	m_players.push_back(Player("Player 1", 100, 1, 20));
+	m_players.push_back(Player("Player 2", 100, 1, 20));
 
 	// Main game loop
 	while (true)
@@ -35,7 +35,6 @@ void Game::startGame()
 
 		// Start the current player's turn
 		startTurn();
-		std::cout << "Player n° : " << indexCurrentPlayer << std::endl;
 
 		// End the current player's turn
 		endTurn();
@@ -48,9 +47,9 @@ void Game::startTurn()
 	// Increment gold of current player
 	m_players[indexCurrentPlayer].setGold(m_players[indexCurrentPlayer].getGold() + 1);
 
-	while (choiceString != "q") {
+	std::cout << "Player : " << indexCurrentPlayer << std::endl;
 
-		std::cout << "Press q pass to the next phase" << std::endl;
+	while (true) {
 
 		// Prompt player to hire a battler
 		std::cout << "Do you want to hire a battler? (Y/N/Q): ";
@@ -120,33 +119,56 @@ void Game::startTurn()
 			// Dismiss chosen battler
 			dismissBattler(m_players[indexCurrentPlayer].getBattlers()[choice - 1]);
 		}
+		std::cout << "Finish buying ? (Y/N)";
+		std::cin >> choiceString;
+		if (choiceString == "Y" || choiceString == "y") {
+			break;
+		}
 	}
 }
 
 void Game::endTurn()
 {
 	std::cout << "Do you want to change your hand ?(Y/N)" << std::endl;
-	std::string choice;
-	std::cin >> choice;
-	if ((choice == "N" || choice == "n") && m_players[indexCurrentPlayer].getHand().size() < 1) {
+	std::string choiceString;
+	std::cin >> choiceString;
+	if ((choiceString == "N" || choiceString == "n") && m_players[indexCurrentPlayer].getHand().size() < 1) {
 		std::cout << "You need to choose at least 1 Battler in you hand" << std::endl;
-		choice = "y";
+		choiceString = "y";
 	}
-	if (choice != "y" || choice != "Y") {
-		while ((choice != "q" || choice != "Q") && m_players[indexCurrentPlayer].getHand().size() >= 1) {
+	if (choiceString == "y" || choiceString == "Y") {
+		while (true) {
 
 			//Player can choose up to 4 Battlers in hand
 			std::cout << "Choose up to 4 battlers to put in battle (Enter q to quit)" << std::endl;
+			std::cout << "Battler list : " << std::endl;
 
 			for (int i = 0; i < m_players[indexCurrentPlayer].getBattlers().size(); i++) {
 				std::cout << i + 1 << ". " << m_players[indexCurrentPlayer].getBattlers()[i].getName() << std::endl;
+			}
+
+			std::cout << "Your hand : " << std::endl;
+
+			for (int i = 0; i < m_players[indexCurrentPlayer].getHand().size(); i++) {
+				std::cout << i + 1 << ". " << m_players[indexCurrentPlayer].getHand()[i].getName() << std::endl;
 			}
 			std::cout << "Choose the battler you want to put in your hand" << std::endl;
 
 			int choice;
 			std::cin >> choice;
 			m_players[indexCurrentPlayer].addToHand(m_players[indexCurrentPlayer].getBattlers()[choice - 1]);
+
+			std::cout << "Finish turn ?" << std::endl;
+			std::cin >> choiceString;
+			if (choiceString == "y" || choiceString == "Y") {
+				break;
+			}
 		}
+	}
+
+	if (indexCurrentPlayer == 1) {
+		attackTurn();
+		m_turn++;
 	}
 
 	//Changes the indexCurrentPlayer between the 2 players
@@ -253,4 +275,97 @@ void Game::refreshBattlerList() {
 	for (int i = 0; i < 3; i++) {
 		m_tabRandomBattlerNumber[i] = rand() % m_battlerList.size();
 	}
+}
+
+void Game::attackTurn() {
+
+	std::cout << "Entering combat phase !" << std::endl;
+
+	int p1 = rand() % 100;
+	int p2 = rand() % 100;
+
+	std::vector<Battler> P1Hand = m_players[0].getHand();
+	std::vector<Battler> P2Hand = m_players[1].getHand();
+
+	while (p1 == p2)
+	{
+		int p1 = rand() % 100;
+		int p2 = rand() % 100;
+	}
+
+	if (p1 > p2) {
+
+		while ((P1Hand.empty() == false) && (P2Hand.empty() == false)) {
+			int randomOponent = rand() % P1Hand.size();
+			int randomVictim = rand() % P2Hand.size();
+
+			std::cout << "Player : 1 attacks " << P2Hand[randomVictim].getName() << " and deals " << P1Hand[randomOponent].getAttackDmg() << " Damages" << std::endl;
+
+			P2Hand[randomVictim].setHealth(P2Hand[randomVictim].getHealth() - P1Hand[randomOponent].getAttackDmg());
+
+			if (P2Hand[randomVictim].getHealth() <= 0) {
+				P2Hand.erase(P2Hand.begin()+randomVictim);
+			}
+			if (P2Hand.empty()) {
+				m_players[0].addGold(3);
+				m_players[1].setHP(m_players[1].getHP() - calculateHpLost(P1Hand));
+				break;
+			}
+
+			std::cout << "Player : 2 attacks " << P1Hand[randomOponent].getName() << " and deals " << P2Hand[randomVictim].getAttackDmg() << " Damages" << std::endl;
+
+			P1Hand[randomOponent].setHealth(P1Hand[randomOponent].getHealth() - P2Hand[randomVictim].getAttackDmg());
+
+			if (P1Hand[randomOponent].getHealth() <= 0) {
+				P1Hand.erase(P1Hand.begin() + randomOponent);
+			}
+			if (P1Hand.empty()) {
+				m_players[1].addGold(3);
+				m_players[0].setHP(m_players[0].getHP() - calculateHpLost(P2Hand));
+				break;
+			}
+		}
+	}
+	if (p1 < p2) {
+
+		while ((P1Hand.empty() == false) && (P2Hand.empty() == false)) {
+			int randomOponent = rand() % P2Hand.size();
+			int randomVictim = rand() % P1Hand.size();
+
+			std::cout << "Player : 2 attacks " << P1Hand[randomOponent].getName() << " and deals " << P2Hand[randomVictim].getAttackDmg() << " Damages" << std::endl;
+
+			P1Hand[randomVictim].setHealth(P1Hand[randomVictim].getHealth() - P2Hand[randomOponent].getAttackDmg());
+
+			if (P1Hand[randomVictim].getHealth() <= 0) {
+				P1Hand.erase(P1Hand.begin() + randomVictim);
+			}
+			if (P1Hand.empty()) {
+				m_players[1].addGold(3);
+				m_players[0].setHP(m_players[0].getHP() - calculateHpLost(P2Hand));
+				break;
+			}
+
+			P2Hand[randomOponent].setHealth(P2Hand[randomOponent].getHealth() - P1Hand[randomVictim].getAttackDmg());
+
+			std::cout << "Player : 1 attacks " << P2Hand[randomVictim].getName() << " and deals " << P1Hand[randomOponent].getAttackDmg() << " Damages" << std::endl;
+
+			if (P2Hand[randomOponent].getHealth() <= 0) {
+				P2Hand.erase(P2Hand.begin() + randomOponent);
+			}
+			if (P2Hand.empty()) {
+				m_players[0].addGold(3);
+				m_players[1].setHP(m_players[1].getHP() - calculateHpLost(P1Hand));
+				break;
+			}
+		}
+	}
+}
+
+int Game::calculateHpLost(std::vector<Battler> playerBattler) {
+	int totalHp = 0;
+	for (int i = 0; i < playerBattler.size(); i++) {
+		totalHp += playerBattler[i].getHealth();
+	}
+
+	return totalHp;
 }
