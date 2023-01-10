@@ -19,6 +19,7 @@ public:
 	void endGame();
 	void startTurn();
 	void attackTurn();
+	void checkTier();
 
 	int calculateHpLost(std::vector<Battler> playerBattler);
 
@@ -27,9 +28,9 @@ public:
 	void clearConsole() {
 #if defined(_WIN32)
 		{ system("cls"); 
-		std::cout << "Player : " << m_players[indexCurrentPlayer].getName() << "	Turn : " << m_turn << "	Money : " << m_players[indexCurrentPlayer].getGold() << "	Tavern tier : " << m_players[indexCurrentPlayer].getTavernTier() << std::endl; }
+		std::cout << "Player : " << m_players[indexCurrentPlayer].getName() << "	Turn : " << m_turn << "	Money : " << m_players[indexCurrentPlayer].getGold() << "	Tavern tier : " << m_players[indexCurrentPlayer].getTavernTier() <<"		HP : " << m_players[indexCurrentPlayer].getHP() << std::endl; }
 #elif defined(__linux__)
-		{ system("clear"); std::cout << "Player : " << m_players[indexCurrentPlayer].getName() << "	Turn : " << m_turn << "	Money : " << m_players[indexCurrentPlayer].getGold() << "	Tavern tier : " << m_players[indexCurrentPlayer].getTavernTier() << std::endl; }
+		{ system("clear"); std::cout << "Player : " << m_players[indexCurrentPlayer].getName() << "	Turn : " << m_turn << "	Money : " << m_players[indexCurrentPlayer].getGold() << "	Tavern tier : " << m_players[indexCurrentPlayer].getTavernTier() <<"	HP : " << m_players[indexCurrentPlayer].getHP() std::endl; }
 	}
 #endif;
 	}

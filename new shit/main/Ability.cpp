@@ -22,10 +22,18 @@ const std::string& Ability::getType() const
 	return m_type;
 }
 
-void Ability::setEffect(Battler& source, Battler& target, std::string tribe)
+void Ability::setEffect(Battler& target, std::string tribe)
 {
-	/*if (type == "poison")
-	{
-		target.setHealth(target.getHealth() - 2);
-	}*/
+	if (tribe == "Demon") {
+		target.setAttackDmg(target.getAttackDmg() + 1);
+	}
+	if (tribe == "Murloc") {
+		target.setAttackDmg(target.getAttackDmg() - 1);
+	}
+	if (tribe == "Beast") {
+		target.setAttackDmg(target.getAttackDmg() + 2);
+	}
+	if (tribe == "Mech") {
+		target.setAttackDmg(target.getAttackDmg() - 2);
+	}
 }

@@ -5,12 +5,18 @@
 #include <ctime>
 #include <numeric>
 
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
 Game::Game() {
-	m_battlerList.push_back(Battler("truc1", 1, 10, 1, "goblin"));
-	m_battlerList.push_back(Battler("truc2", 1, 10, 1, "goblin"));
-	m_battlerList.push_back(Battler("truc3", 1, 10, 1, "goblin"));
-	m_battlerList.push_back(Battler("truc4", 1, 10, 1, "goblin"));
-	std::cout << m_battlerList.size() << std::endl;
+	m_players.push_back(Player("Player 1", 100, 1, 1));
+	m_players.push_back(Player("Player 2", 100, 1, 1));
+
+	checkTier();
+
 	indexCurrentPlayer = 0;
 	m_tabRandomBattlerNumber[9] = { 0 };
 	refreshBattlerList();
@@ -19,8 +25,6 @@ Game::Game() {
 
 void Game::startGame()
 {
-	m_players.push_back(Player("Player 1", 100, 1, 20));
-	m_players.push_back(Player("Player 2", 100, 1, 20));
 
 	// Main game loop
 	while (true)
@@ -42,6 +46,8 @@ void Game::startGame()
 
 void Game::startTurn()
 {
+	checkTier();
+
 	std::string choiceString;
 
 	clearConsole();
@@ -78,7 +84,7 @@ void Game::startTurn()
 			std::cin >> choice;
 
 			// Hire chosen battler
-			hireBattler(m_battlerList[m_tabRandomBattlerNumber[choice -1]]);
+			hireBattler(m_battlerList[m_tabRandomBattlerNumber[choice - 1]]);
 			clearConsole();
 		}
 
@@ -96,9 +102,8 @@ void Game::startTurn()
 		else {
 			std::cout << "Not enough gold to upgrade your Tavern" << std::endl;
 		}
-		clearConsole();
 
-			// Prompt player to dismiss a battler
+		// Prompt player to dismiss a battler
 		std::cout << "Do you want to dismiss a battler? (Y/N): ";
 		std::cin >> choiceString;
 		if (choiceString == "Y" || choiceString == "y")
@@ -159,6 +164,43 @@ void Game::endTurn()
 			int choice;
 			std::cin >> choice;
 			m_players[indexCurrentPlayer].addToHand(m_players[indexCurrentPlayer].getBattlers()[choice - 1]);
+			m_players[indexCurrentPlayer].getBattlers().erase(m_players[indexCurrentPlayer].getBattlers().begin() + choice - 1);
+
+			std::cout << "Finish adding to hand ?" << std::endl;
+			std::cin >> choiceString;
+			if (choiceString == "y" || choiceString == "Y") {
+				break;
+			}
+		}
+	}
+	std::cout << "Do you want to remove Battlers from your hand ?(Y/N)" << std::endl;
+	std::cin >> choiceString;
+	if (choiceString == "y" || choiceString == "Y") {
+		while (true) {
+
+			if (m_players[indexCurrentPlayer].getHand().size() <= 0) {
+				std::cout << "You must have at least 1 battler in your hand !" << std::endl;
+				break;
+			}
+			clearConsole();
+
+			std::cout << "Battler list : " << std::endl;
+
+			for (int i = 0; i < m_players[indexCurrentPlayer].getBattlers().size(); i++) {
+				std::cout << i + 1 << ". " << m_players[indexCurrentPlayer].getBattlers()[i].getName() << std::endl;
+			}
+
+			std::cout << "Your hand : " << std::endl;
+
+			for (int i = 0; i < m_players[indexCurrentPlayer].getHand().size(); i++) {
+				std::cout << i + 1 << ". " << m_players[indexCurrentPlayer].getHand()[i].getName() << std::endl;
+			}
+			std::cout << "Choose the battlers you want to remove from your hand (Enter q to quit)" << std::endl;
+
+			int choice;
+			std::cin >> choice;
+			m_players[indexCurrentPlayer].addBattler(m_players[indexCurrentPlayer].getBattlers()[choice - 1]);
+			m_players[indexCurrentPlayer].removeFromHand(m_players[indexCurrentPlayer].getBattlers()[choice - 1]);
 
 			std::cout << "Finish turn ?" << std::endl;
 			std::cin >> choiceString;
@@ -167,7 +209,8 @@ void Game::endTurn()
 			}
 		}
 	}
-	
+
+
 	// Increment gold of current player
 	m_players[indexCurrentPlayer].setGold(m_players[indexCurrentPlayer].getGold() + 2 + m_turn);
 
@@ -220,6 +263,7 @@ void Game::upgradeTavern()
 	{
 		m_players[indexCurrentPlayer].setGold(m_players[indexCurrentPlayer].getGold() - cost);
 		m_players[indexCurrentPlayer].setTavernTier(m_players[indexCurrentPlayer].getTavernTier() + 1);
+		std::cout << "Tavern upgraded to lvl " << m_players[indexCurrentPlayer].getTavernTier() << " . You'll see new tier in your shot next turn !" << std::endl;
 	}
 	else
 	{
@@ -308,8 +352,10 @@ void Game::attackTurn() {
 
 			P2Hand[randomVictim].setHealth(P2Hand[randomVictim].getHealth() - P1Hand[randomOponent].getAttackDmg());
 
+			Sleep(1000);
+
 			if (P2Hand[randomVictim].getHealth() <= 0) {
-				P2Hand.erase(P2Hand.begin()+randomVictim);
+				P2Hand.erase(P2Hand.begin() + randomVictim);
 			}
 			if (P2Hand.empty()) {
 				m_players[0].addGold(3);
@@ -320,6 +366,8 @@ void Game::attackTurn() {
 			std::cout << "Player : 2 attacks " << P1Hand[randomOponent].getName() << " and deals " << P2Hand[randomVictim].getAttackDmg() << " Damages" << std::endl;
 
 			P1Hand[randomOponent].setHealth(P1Hand[randomOponent].getHealth() - P2Hand[randomVictim].getAttackDmg());
+
+			Sleep(1000);
 
 			if (P1Hand[randomOponent].getHealth() <= 0) {
 				P1Hand.erase(P1Hand.begin() + randomOponent);
@@ -341,6 +389,8 @@ void Game::attackTurn() {
 
 			P1Hand[randomVictim].setHealth(P1Hand[randomVictim].getHealth() - P2Hand[randomOponent].getAttackDmg());
 
+			Sleep(1000);
+
 			if (P1Hand[randomVictim].getHealth() <= 0) {
 				P1Hand.erase(P1Hand.begin() + randomVictim);
 			}
@@ -354,6 +404,8 @@ void Game::attackTurn() {
 
 			std::cout << "Player : 1 attacks " << P2Hand[randomVictim].getName() << " and deals " << P1Hand[randomOponent].getAttackDmg() << " Damages" << std::endl;
 
+			Sleep(1000);
+
 			if (P2Hand[randomOponent].getHealth() <= 0) {
 				P2Hand.erase(P2Hand.begin() + randomOponent);
 			}
@@ -364,7 +416,6 @@ void Game::attackTurn() {
 			}
 		}
 	}
-	exit(0);
 }
 
 int Game::calculateHpLost(std::vector<Battler> playerBattler) {
@@ -374,4 +425,77 @@ int Game::calculateHpLost(std::vector<Battler> playerBattler) {
 	}
 
 	return totalHp;
+}
+
+void Game::checkTier() {
+	if (m_players[indexCurrentPlayer].getTavernTier() == 1) {
+		m_battlerList.clear();
+		// Tier 1
+		m_battlerList.push_back(Battler("Goblin Grunt", 2, 5, 1, "Demon"));
+		m_battlerList.push_back(Battler("Murloc Scout", 1, 1, 1, "Murloc"));
+		m_battlerList.push_back(Battler("Young Wolf", 1, 1, 1, "Beast"));
+		m_battlerList.push_back(Battler("Clockwork Gnome", 1, 2, 1, "Mech"));
+
+		refreshBattlerList();
+	}
+	if (m_players[indexCurrentPlayer].getTavernTier() == 2) {
+		m_battlerList.clear();
+		// Tier 1
+		m_battlerList.push_back(Battler("Goblin Grunt", 2, 5, 1, "Demon"));
+		m_battlerList.push_back(Battler("Murloc Scout", 1, 1, 1, "Murloc"));
+		m_battlerList.push_back(Battler("Young Wolf", 1, 1, 1, "Beast"));
+		m_battlerList.push_back(Battler("Clockwork Gnome", 1, 2, 1, "Mech"));
+		// Tier 2
+		m_battlerList.push_back(Battler("Imp", 3, 5, 2, "Demon"));
+		m_battlerList.push_back(Battler("Murloc Tidehunter", 2, 2, 2, "Murloc"));
+		m_battlerList.push_back(Battler("Dire Wolf", 2, 2, 2, "Beast"));
+		m_battlerList.push_back(Battler("Mechanical Dragonling", 3, 3, 2, "Mech"));
+
+		refreshBattlerList();
+	}
+	if (m_players[indexCurrentPlayer].getTavernTier() == 3) {
+		m_battlerList.clear();
+		// Tier 1
+		m_battlerList.push_back(Battler("Goblin Grunt", 2, 5, 1, "Demon"));
+		m_battlerList.push_back(Battler("Murloc Scout", 1, 1, 1, "Murloc"));
+		m_battlerList.push_back(Battler("Young Wolf", 1, 1, 1, "Beast"));
+		m_battlerList.push_back(Battler("Clockwork Gnome", 1, 2, 1, "Mech"));
+		// Tier 2
+		m_battlerList.push_back(Battler("Imp", 3, 5, 2, "Demon"));
+		m_battlerList.push_back(Battler("Murloc Tidehunter", 2, 2, 2, "Murloc"));
+		m_battlerList.push_back(Battler("Dire Wolf", 2, 2, 2, "Beast"));
+		m_battlerList.push_back(Battler("Mechanical Dragonling", 3, 3, 2, "Mech"));
+		// Tier 3
+		m_battlerList.push_back(Battler("Voidwalker", 4, 5, 3, "Demon"));
+		m_battlerList.push_back(Battler("Murloc Warleader", 3, 3, 3, "Murloc"));
+		m_battlerList.push_back(Battler("Savannah Highmane", 4, 4, 3, "Beast"));
+		m_battlerList.push_back(Battler("Annoy-o-Tron", 2, 4, 3, "Mech"));
+
+		refreshBattlerList();
+	}
+	if (m_players[indexCurrentPlayer].getTavernTier() == 4) {
+		m_battlerList.clear();
+		// Tier 1
+		m_battlerList.push_back(Battler("Goblin Grunt", 2, 5, 1, "Demon"));
+		m_battlerList.push_back(Battler("Murloc Scout", 1, 1, 1, "Murloc"));
+		m_battlerList.push_back(Battler("Young Wolf", 1, 1, 1, "Beast"));
+		m_battlerList.push_back(Battler("Clockwork Gnome", 1, 2, 1, "Mech"));
+		// Tier 2
+		m_battlerList.push_back(Battler("Imp", 3, 5, 2, "Demon"));
+		m_battlerList.push_back(Battler("Murloc Tidehunter", 2, 2, 2, "Murloc"));
+		m_battlerList.push_back(Battler("Dire Wolf", 2, 2, 2, "Beast"));
+		m_battlerList.push_back(Battler("Mechanical Dragonling", 3, 3, 2, "Mech"));
+		// Tier 3
+		m_battlerList.push_back(Battler("Voidwalker", 4, 5, 3, "Demon"));
+		m_battlerList.push_back(Battler("Murloc Warleader", 3, 3, 3, "Murloc"));
+		m_battlerList.push_back(Battler("Savannah Highmane", 4, 4, 3, "Beast"));
+		m_battlerList.push_back(Battler("Annoy-o-Tron", 2, 4, 3, "Mech"));
+		// Tier 4
+		m_battlerList.push_back(Battler("Succubus", 5, 5, 4, "Demon"));
+		m_battlerList.push_back(Battler("Murloc Tastyfish", 4, 4, 4, "Murloc"));
+		m_battlerList.push_back(Battler("Giant Wolf", 5, 5, 4, "Beast"));
+		m_battlerList.push_back(Battler("Mechano-Egg", 3, 5, 4, "Mech"));
+
+		refreshBattlerList();
+	}
 }

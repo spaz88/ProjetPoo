@@ -12,7 +12,7 @@ public:
 	const std::string& getName() const;
 	const std::string& getDescription() const;
 	const std::string& getType() const;
-	void setEffect(Battler& source, Battler& target, std::string type);
+	void setEffect(Battler& target, std::string type);
 private:
 	std::string m_name;
 	std::string m_description;
