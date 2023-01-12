@@ -1,0 +1,40 @@
+import jeuDeCarte.*;
+import gestionDeBanque.*;
+import geometrie.*;
+import chrono.*;
+
+public class Main{
+    
+    public static void main(String[] args){
+       
+       
+       
+       // Ex Gestion de banque
+       
+       Compte compte1 = new Compte(2000, "titulaire1");
+       Compte compte2 = new Compte(3500, "titulaire2");
+       
+       compte1.depot(300);
+       System.out.println(compte1.getSolde());
+       
+       compte1.retrait(900);
+       System.out.println(compte1.getSolde());
+       
+       compte1.virement(150, compte2);
+       System.out.println(compte2.getSolde());
+       
+       compte2.etatDuCompte();
+       
+       
+       // Ex Géométrie
+        Cercle cercle1 = new Cercle(3, "Cercle");
+        System.out.println(cercle1.calculPerimetre());
+        
+        Triangle triangle1 = new Triangle(9, 6, 3, "Triangle");
+        System.out.println(triangle1.calculAire());
+        
+        Carre carre1 = new Carre(4, 4, "Carre");
+         System.out.println(carre1.monType());
+        
+    }
+}
