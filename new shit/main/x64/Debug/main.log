@@ -1,5 +1,4 @@
 ﻿  Game.cpp
 C:\Users\shby5041\Documents\GitHub\ProjetPoo\new shit\main\Game.cpp(23,12): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
-  main.cpp
-  Génération de code en cours...
-  main.vcxproj -> C:\Users\shby5041\Documents\GitHub\ProjetPoo\new shit\x64\Debug\main.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(1094,5): error MSB6006: Arrêt de "link.exe" avec le code 1168.
+LINK : fatal error LNK1168: impossible d'ouvrir C:\Users\shby5041\Documents\GitHub\ProjetPoo\new shit\x64\Debug\main.exe pour écrire

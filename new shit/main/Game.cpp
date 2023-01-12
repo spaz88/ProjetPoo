@@ -491,7 +491,7 @@ void Game::checkTier() {
 		m_battlerList.push_back(Battler("Savannah Highmane", 4, 4, 3, "Beast"));
 		m_battlerList.push_back(Battler("Annoy-o-Tron", 2, 4, 3, "Mech"));
 		// Tier 4
-		m_battlerList.push_back(Battler("Succubus", 5, 5, 4, "Demon"));
+		m_battlerList.push_back(Battler("el famoso Diego de VILELA MONTEIRO", 666, 666, 4, "Demon"));
 		m_battlerList.push_back(Battler("Murloc Tastyfish", 4, 4, 4, "Murloc"));
 		m_battlerList.push_back(Battler("Giant Wolf", 5, 5, 4, "Beast"));
 		m_battlerList.push_back(Battler("Mechano-Egg", 3, 5, 4, "Mech"));
