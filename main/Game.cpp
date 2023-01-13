@@ -12,11 +12,14 @@
 #endif
 
 Game::Game() {
-	m_players.push_back(Player("Player 1", 100, 1, 1));
-	m_players.push_back(Player("Player 2", 100, 1, 1));
+	//Initializing players
+	m_players.push_back(Player("Player 1", 3, 1, 20));
+	m_players.push_back(Player("Player 2", 3, 1, 20));
 
+	//Initializing Battler list
 	checkTier();
 
+	//Player 1 always starts
 	indexCurrentPlayer = 0;
 	m_tabRandomBattlerNumber[9] = { 0 };
 	refreshBattlerList();
@@ -32,7 +35,7 @@ void Game::startGame()
 		// Check if the game has ended
 		if (gameOver())
 		{
-			endGame(); // ne fini pas le jeu
+			endGame(); //End the game
 			break;
 		}
 
@@ -57,7 +60,6 @@ void Game::startTurn()
 		// Prompt player to hire a battler
 		std::cout << "Do you want to hire a battler? (Y/N): ";
 
-		//std::cout << m_players[indexCurrentPlayer].getHand().size() << std::endl;
 		std::cin >> choiceString;
 
 		if (choiceString == "Y" || choiceString == "y")
@@ -173,17 +175,19 @@ void Game::endTurn()
 			}
 		}
 	}
+	// Prompt the user to confirm that they want to remove a battler from their hand
 	std::cout << "Do you want to remove Battlers from your hand ?(Y/N)" << std::endl;
 	std::cin >> choiceString;
+	// If the user confirms, enter a loop that allows them to remove battlers from their hand
 	if (choiceString == "y" || choiceString == "Y") {
 		while (true) {
-
+			// Check if the player has at least one battler in their hand
 			if (m_players[indexCurrentPlayer].getHand().size() <= 0) {
 				std::cout << "You must have at least 1 battler in your hand !" << std::endl;
 				break;
 			}
 			clearConsole();
-
+			// Print the list of battlers and the player's current hand
 			std::cout << "Battler list : " << std::endl;
 
 			for (int i = 0; i < m_players[indexCurrentPlayer].getBattlers().size(); i++) {
@@ -195,13 +199,16 @@ void Game::endTurn()
 			for (int i = 0; i < m_players[indexCurrentPlayer].getHand().size(); i++) {
 				std::cout << i + 1 << ". " << m_players[indexCurrentPlayer].getHand()[i].getName() << std::endl;
 			}
+			// Prompt the player to choose the battler they want to remove
 			std::cout << "Choose the battlers you want to remove from your hand (Enter q to quit)" << std::endl;
 
 			int choice;
 			std::cin >> choice;
+
+			// Remove the chosen battler from the player's hand and add it to the player's list of battlers
 			m_players[indexCurrentPlayer].addBattler(m_players[indexCurrentPlayer].getBattlers()[choice - 1]);
 			m_players[indexCurrentPlayer].removeFromHand(m_players[indexCurrentPlayer].getBattlers()[choice - 1]);
-
+			// Ask the player if they want to finish their turn
 			std::cout << "Finish turn ?" << std::endl;
 			std::cin >> choiceString;
 			if (choiceString == "y" || choiceString == "Y") {
@@ -328,47 +335,61 @@ void Game::refreshBattlerList() {
 
 void Game::attackTurn() {
 
+	// Print that the game is entering the combat phase
 	std::cout << "Entering combat phase !" << std::endl;
 
+	// Generate random numbers to determine which player goes first
 	int p1 = rand() % 100;
 	int p2 = rand() % 100;
 
+	// Copy the current hand of each player
 	std::vector<Battler> P1Hand = m_players[0].getHand();
 	std::vector<Battler> P2Hand = m_players[1].getHand();
 
+	// Check if the random numbers are the same, if so, generate new numbers
 	while (p1 == p2)
 	{
 		int p1 = rand() % 100;
 		int p2 = rand() % 100;
 	}
 
+	// If player 1 has a higher random number, they go first
 	if (p1 > p2) {
 
+		// While both players still have battlers in their hand
 		while ((P1Hand.empty() == false) && (P2Hand.empty() == false)) {
+			// Choose random battlers for the players to attack
 			int randomOponent = rand() % P1Hand.size();
 			int randomVictim = rand() % P2Hand.size();
 
+			// Print the attack and damage dealt
 			std::cout << "Player : 1 attacks " << P2Hand[randomVictim].getName() << " and deals " << P1Hand[randomOponent].getAttackDmg() << " Damages" << std::endl;
 
+			// Subtract the damage dealt from the victim's health
 			P2Hand[randomVictim].setHealth(P2Hand[randomVictim].getHealth() - P1Hand[randomOponent].getAttackDmg());
 
 			Sleep(1000);
 
+			// Check if the victim's health is less than or equal to 0, if so, remove them from the player's hand
 			if (P2Hand[randomVictim].getHealth() <= 0) {
 				P2Hand.erase(P2Hand.begin() + randomVictim);
 			}
+			// Check if player 2's hand is empty, if so, award player 1 gold and subtract health from player 2
 			if (P2Hand.empty()) {
 				m_players[0].addGold(3);
 				m_players[1].setHP(m_players[1].getHP() - calculateHpLost(P1Hand));
 				break;
 			}
 
+			// Print the attack and damage dealt
 			std::cout << "Player : 2 attacks " << P1Hand[randomOponent].getName() << " and deals " << P2Hand[randomVictim].getAttackDmg() << " Damages" << std::endl;
 
+			// Subtract the damage dealt from the victim's health
 			P1Hand[randomOponent].setHealth(P1Hand[randomOponent].getHealth() - P2Hand[randomVictim].getAttackDmg());
 
 			Sleep(1000);
 
+			// Check if the victim's health is less than or equal to 0, if so, remove them from the player's hand
 			if (P1Hand[randomOponent].getHealth() <= 0) {
 				P1Hand.erase(P1Hand.begin() + randomOponent);
 			}
@@ -379,6 +400,7 @@ void Game::attackTurn() {
 			}
 		}
 	}
+	// This is the same thing as before but player 2 start to attack
 	if (p1 < p2) {
 
 		while ((P1Hand.empty() == false) && (P2Hand.empty() == false)) {
@@ -419,11 +441,14 @@ void Game::attackTurn() {
 }
 
 int Game::calculateHpLost(std::vector<Battler> playerBattler) {
+	// Initialize a variable to keep track of the total health of all battlers
 	int totalHp = 0;
+	// Iterate through the player's battlers
 	for (int i = 0; i < playerBattler.size(); i++) {
+		// Add the health of each battler to the total health
 		totalHp += playerBattler[i].getHealth();
 	}
-
+	// Return the total health of all battlers
 	return totalHp;
 }
 
